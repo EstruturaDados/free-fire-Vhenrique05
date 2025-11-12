@@ -191,13 +191,22 @@ void inserirItem() {
 
 
 /*
- * função que organiza a mochila usando o algoritmo: bubble-sort
+ * Função que organiza a mochila usando o algoritmo: bubble-sort
  * como funciona?
  * - ele analisa a lista do alcance "i_inicio" até "i_final",
  *   pulando os números já organizados (definido por "j")
  * - quando ele chegar ao final da lista, ele considera o último
  *   número como "organizado"
  * - ele repete o mesmo processo nas próximas sub-listas
+ *
+ * OBS: Eu não sabia como implementar no código um sistema simples
+ *      que me permitisse gerenciar o vetor mochila, sem deixar
+ *      valores nulos no meio da lista.
+ *
+ *      Eu acabei fazendo essa função que realiza a conferência
+ *      dos valores, e quando terminei, descobri que ele era uma
+ *      implementação do algoritmo bubble-sort.
+ *
  */
 void organizar_mochila(const int i_inicio, const int i_final) {
 	// define quantidade de vezes que o algoritmo executará
