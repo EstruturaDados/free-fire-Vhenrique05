@@ -44,7 +44,7 @@ void limparTela();
 bool compararItem(const Item* a, const Item* b);
 
 // função que serve para imprimir as informações de um item
-void imprimirItem(const Item* item);
+void imprimirItem(const Item* item, bool detalhado);
 
 // Apresenta o menu principal ao jogador, com destaque para status da ordenação.
 void exibirMenu();
@@ -92,9 +92,15 @@ bool compararItem(const Item* a, const Item* b) {
 		a->quantidade == b->quantidade;
 }
 
-void imprimirItem(const Item* item) {
-	printf("[>] Nome: %s - Tipo: %s - Quantidade: %d\n",
-	       item->nome, item->tipo, item->quantidade);
+void imprimirItem(const Item* item, bool detalhado) {
+	printf("[>] Nome: %s\n", item->nome);
+
+	// se a opção "detalhado" for verdadeira,
+	// ele mostra os dados detalhados
+	if (detalhado) {
+		printf("[>] Tipo: %s\n", item->tipo);
+		printf("[>] Quantidade: %d\n", item->quantidade);
+	}
 }
 
 void inserirItem() {
@@ -134,7 +140,7 @@ void inserirItem() {
 
 		printf("------------------------------\n");
 		printf("[*] Os dados estão corretos?\n");
-		imprimirItem(&item);
+		imprimirItem(&item, true);
 		printf("------------------------------\n");
 		printf(" [1] - Salvar dados\n");
 		printf(" [0] - Cancelar\n");
@@ -275,7 +281,7 @@ void removerItem() {
 
 		printf("------------------------------\n");
 		printf("[*] Item \"%s\" encontrado!\n", nome);
-		printf("[>] Índice: %d/%d\n", indice_achado + 1, MAX_ITEMS);
+		printf("[>] Índice: %d/%d\n", indice_achado + 1, mochila_quantidade);
 		printf("------------------------------\n");
 		printf("[*] Você tem certeza que\n");
 		printf("    deseja remover este item?\n");
@@ -331,18 +337,20 @@ void listarItens() {
 
 	printf("[*] Listando itens na mochila...\n");
 
+	if (mochila_quantidade == 0) {
+		printf("[!] A mochila está vazia!\n");
+		return;
+	}
+
 	// realiza um for loop para testar/listar todos os itens da mochila
-	for (int i = 0; i < MAX_ITEMS; i++) {
+	for (int i = 0; i < mochila_quantidade; i++) {
 		// c_item: item atual do laço
 		const Item* c_item = &mochila[i];
 
-		printf("[>] (Item %d) ", i);
-
-		// se o item atual for nulo
-		if (compararItem(&mochila[i], &ItemNulo)) {
-			printf("[-] Item nulo\n");
-		} else {
-			imprimirItem(c_item);
+		// se o item atual não for nulo
+		if (!compararItem(&mochila[i], &ItemNulo)) {
+			printf("[>] (Item %d/%d) ", i + 1, mochila_quantidade);
+			imprimirItem(c_item, false);
 		}
 	}
 
@@ -404,10 +412,10 @@ void procurarItem() {
 
 	limparTela();
 	printf("------------------------------\n");
-	printf("[*] Item \"%s\" encontrado!\n", nome);
-	printf("[>] Índice: %d/%d\n", indice_achado + 1, MAX_ITEMS);
+	printf("[*] Item encontrado!\n");
+	printf("[>] Índice: %d/%d\n", indice_achado + 1, mochila_quantidade);
 	printf("------------------------------\n");
-	imprimirItem(&mochila[indice_achado]);
+	imprimirItem(&mochila[indice_achado], true);
 }
 
 void exibirMenu() {
